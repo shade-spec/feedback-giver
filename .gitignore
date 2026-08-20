@@ -4,3 +4,4 @@ data/
 .env
 .DS_Store
 *.tsbuildinfo
+tsconfig.check.json
