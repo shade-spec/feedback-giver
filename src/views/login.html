@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WG-BUN-VPN · Connexion</title>
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body class="login-body">
+<main class="login-card">
+  <div class="logo">
+    <svg viewBox="0 0 24 24" width="42" height="42" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+  </div>
+  <h1>WG-BUN-VPN</h1>
+  <p class="sub">Tableau de bord — connexion</p>
+
+  <form id="login-form" autocomplete="current-password">
+    <label>
+      <span>Utilisateur</span>
+      <input type="text" id="username" name="username" required autofocus>
+    </label>
+    <label>
+      <span>Mot de passe</span>
+      <input type="password" id="password" name="password" required>
+    </label>
+    <button type="submit" id="btn">Se connecter</button>
+    <div class="error" id="error"></div>
+  </form>
+</main>
+<script>
+const form = document.getElementById("login-form");
+const errEl = document.getElementById("error");
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  errEl.textContent = "";
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+  const btn = document.getElementById("btn");
+  btn.disabled = true;
+  btn.textContent = "…";
+  try {
+    const r = await fetch("/api/login", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ username, password }),
+      credentials: "same-origin",
+    });
+    if (r.ok) {
+      window.location.href = "/";
+    } else {
+      const d = await r.json().catch(() => ({}));
+      errEl.textContent = d.error || "Échec de connexion";
+    }
+  } catch (err) {
+    errEl.textContent = "Erreur réseau";
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Se connecter";
+  }
+});
+</script>
+</body>
+</html>
