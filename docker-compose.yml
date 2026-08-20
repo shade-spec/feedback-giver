@@ -1,0 +1,23 @@
+services:
+  vpn:
+    build: .
+    container_name: wg-bun-vpn
+    image: wg-bun-vpn:latest
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    sysctls:
+      - net.ipv4.ip_forward=1
+      - net.ipv4.conf.all.forwarding=1
+      - net.ipv4.conf.all.src_valid_mark=1
+    # Accès au device TUN (WireGuard)
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    volumes:
+      # Persistance : clés, config wg, base SQLite, mot de passe admin
+      - ./data:/data
+    ports:
+      - "51820:51820/udp"   # WireGuard
+      - "3000:3000"         # Dashboard web
+    env_file: .env
+    restart: unless-stopped

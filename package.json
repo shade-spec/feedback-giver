@@ -1,0 +1,29 @@
+{
+  "name": "wg-bun-vpn",
+  "version": "1.0.0",
+  "description": "Serveur VPN WireGuard avec dashboard Bun (comptage bande passante)",
+  "type": "module",
+  "scripts": {
+    "start": "bun run src/server.ts",
+    "dev": "bun --watch src/server.ts"
+  },
+  "dependencies": {
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/qrcode": "^1.5.5"
+  },
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shade-spec/feedback-giver.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shade-spec/feedback-giver/issues"
+  },
+  "homepage": "https://github.com/shade-spec/feedback-giver#readme"
+}

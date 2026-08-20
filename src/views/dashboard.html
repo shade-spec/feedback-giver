@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WG-BUN-VPN · Dashboard</title>
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      WG-BUN-VPN
+    </div>
+    <div class="meta">
+      <div>Serveur <code id="endpoint">…</code></div>
+      <div>Uptime <span id="uptime">…</span> · <a class="logout" href="/logout">Se déconnecter</a></div>
+    </div>
+  </header>
+
+  <section class="grid cols-4">
+    <div class="card stat">
+      <h3>Téléchargé <span style="color:var(--accent)">▼</span></h3>
+      <div class="value accent" id="stat-rx">—</div>
+      <div class="delta"><span id="rate-rx">—</span> · total</div>
+    </div>
+    <div class="card stat">
+      <h3>Envoyé <span style="color:var(--accent-2)">▲</span></h3>
+      <div class="value accent-2" id="stat-tx">—</div>
+      <div class="delta"><span id="rate-tx">—</span> · total</div>
+    </div>
+    <div class="card stat">
+      <h3>Ce mois-ci</h3>
+      <div class="value" id="stat-month">—</div>
+      <div class="delta" id="stat-month-split">—</div>
+    </div>
+    <div class="card stat">
+      <h3>Pairs en ligne</h3>
+      <div class="value" id="stat-online">0<span class="unit">/0</span></div>
+      <div class="delta" id="stat-ips">VPN <code id="server-ip">…</code></div>
+    </div>
+  </section>
+
+  <section class="card" style="margin-top:16px">
+    <h3>
+      Trafic des dernières 24 heures
+      <span class="mono" style="color:var(--muted); font-weight:400; font-size:12px">
+        <span style="color:var(--accent)">▼ down</span> ·
+        <span style="color:var(--accent-2)">▲ up</span>
+      </span>
+    </h3>
+    <div class="chart-wrap">
+      <canvas id="chart"></canvas>
+    </div>
+  </section>
+
+  <div class="section-head">
+    <h2>Pairs (appareils)</h2>
+    <form class="add-form" id="add-form">
+      <input type="text" id="new-name" placeholder="Nom du pair (ex: iPhone)" maxlength="64" required>
+      <button type="submit">+ Ajouter</button>
+    </form>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>IP</th>
+        <th>État</th>
+        <th>Down ▼</th>
+        <th>Up ▲</th>
+        <th>Débit</th>
+        <th>Vu pour la dernière fois</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody id="peers-body">
+      <tr><td colspan="8" class="mono" style="color:var(--muted); text-align:center; padding:24px">Chargement…</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal config pair -->
+<div class="modal-bg" id="modal-bg">
+  <div class="modal">
+    <h2 id="modal-title">Configuration</h2>
+    <p style="color:var(--muted); margin:0 0 8px; font-size:13px">
+      Scanne ce QR code avec l'app WireGuard, ou copie le fichier de config.
+    </p>
+    <img class="qrcode" id="modal-qr" alt="QR code">
+    <pre id="modal-config"></pre>
+    <div class="actions">
+      <button class="secondary copy-btn" id="copy-btn">Copier la config</button>
+      <button class="secondary" id="close-btn">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<script src="/static/chart.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>
